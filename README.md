@@ -13,7 +13,7 @@ We measure the intensity of diachronic semantic shifts in adjectives in English,
 Frequency-controlled experimental results show that, depending on the particular method, evaluative adjectives either do not differ from other types of adjectives in terms of semantic change or appear to actually be less prone to shifting (particularly, to 'jitter'-type shifting). Thus, in spite of many well-known examples of semantically changing evaluative adjectives (like 'terrific' or 'incredible'), it seems that such cases are not specific to this particular type of words.
 
 
-#Code
+# Code
 
 The `algos` directory contains our implementation of the semantic shift detection algorithms 
 used to trace semantic shifts in Russian words:
