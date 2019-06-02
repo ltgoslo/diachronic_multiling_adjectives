@@ -12,6 +12,12 @@ We measure the intensity of diachronic semantic shifts in adjectives in English,
 
 Frequency-controlled experimental results show that, depending on the particular method, evaluative adjectives either do not differ from other types of adjectives in terms of semantic change or appear to actually be less prone to shifting (particularly, to 'jitter'-type shifting). Thus, in spite of many well-known examples of semantically changing evaluative adjectives (like 'terrific' or 'incredible'), it seems that such cases are not specific to this particular type of words.
 
+# Datasets
+
+The `datasets` directory contains lists of english (2250), norwegian (1939) and russian (2435) evaluative adjectives. The lists for English and Norwegian come from the  same  source: https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html, Russian evaluative adjectives were borrowed from RuSentiLex: http://www.labinform.ru/pub/rusentilex/index.htm.  
+
+See the paper for further details of the dataset creation.
+
 
 # Code
 
@@ -22,10 +28,10 @@ used to trace semantic shifts in Russian words:
 - Procrustes alignment
 - Global Anchors
 
-`get_adjectives.py` -- code to get non-evaluative adjectives from models
-`comparing_adjectives.py` -- to calculate metrics of the "speed" of semantic change
-`ttest.py` -- to compare results of the previous code for evalutive and non-evaluative adjectives
-`correlation.py` -- to calculate correlations between distances and frequencies for all adjectives
+`get_adjectives.py` -- code to get non-evaluative adjectives from models  
+`comparing_adjectives.py` -- to calculate metrics of the "speed" of semantic change  
+`ttest.py` -- to compare results of the previous code for evalutive and non-evaluative adjectives  
+`correlation.py` -- to calculate correlations between distances and frequencies for all adjectives  
 
 
 # Using the code
@@ -34,7 +40,7 @@ used to trace semantic shifts in Russian words:
 You should run `get_adjectives.py` as follows, specifying language (rus, eng or nor), frequency treshold (for all adjectives without frequency filtering this value should be 0) and whether you want compare with all non-evaluative adjectives or of the same frequency distribution as evaluative:  
 
 ```
-python3 get\_adjectives.py rus 500 (with\_distribution | simple) corpus_lengths.json
+python3 get_adjectives.py rus 500 (with_distribution | simple) corpus_lengths.json
 ```
 
 Also, you should have folder distibutive _models/_ where embedding models for each time period are kept and a .json with corpus lengths in the following format:  
