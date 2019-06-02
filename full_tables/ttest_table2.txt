@@ -1,0 +1,90 @@
+
+---RUS---
+
+Average normalized frequencies: 0.00002 (evaluative), 0.00001 (fillers)
+Difference: 0.00001
+Welch T-test: Ttest_indResult(statistic=6.0265145193755245, pvalue=1.8601782157894991e-09)
+=====
+mean_dist_jaccard
+Averages: 0.845 	 0.894
+T-test (difference and p-value): -15.05004, 0.00000
+=====
+sum_deltas_jaccard
+Averages: 0.047 	 0.035
+T-test (difference and p-value): 1.44064, 0.14981
+=====
+mean_dist_globalanchors
+Averages: 0.206 	 0.188
+T-test (difference and p-value): 12.62373, 0.00000
+=====
+sum_deltas_globalanchors
+Averages: 0.723 	 0.693
+T-test (difference and p-value): 3.11241, 0.00188
+=====
+mean_dist_procrustes
+Averages: 0.304 	 0.334
+T-test (difference and p-value): -12.01264, 0.00000
+=====
+sum_deltas_procrustes
+Averages: 0.523 	 0.475
+T-test (difference and p-value): 3.92442, 0.00009
+
+---ENG---
+
+Average normalized frequencies: 0.00002 (evaluative), 0.00001 (fillers)
+Difference: 0.00001
+Welch T-test: Ttest_indResult(statistic=4.207550766302941, pvalue=2.707534548774323e-05)
+=====
+mean_dist_jaccard
+Averages: 0.892 	 0.927
+T-test (difference and p-value): -11.08417, 0.00000
+=====
+sum_deltas_jaccard
+Averages: 0.062 	 0.038
+T-test (difference and p-value): 3.27809, 0.00106
+=====
+mean_dist_globalanchors
+Averages: 0.183 	 0.163
+T-test (difference and p-value): 11.90964, 0.00000
+=====
+sum_deltas_globalanchors
+Averages: 0.430 	 0.386
+T-test (difference and p-value): 3.57012, 0.00036
+=====
+mean_dist_procrustes
+Averages: 0.359 	 0.403
+T-test (difference and p-value): -15.52448, 0.00000
+=====
+sum_deltas_procrustes
+Averages: 0.190 	 0.153
+T-test (difference and p-value): 2.98073, 0.00291
+
+---NOR---
+
+Average normalized frequencies: 0.00006 (evaluative), 0.00003 (fillers)
+Difference: 0.00003
+Welch T-test: Ttest_indResult(statistic=2.334100993794209, pvalue=0.020049605113171196)
+=====
+mean_dist_jaccard
+Averages: 0.819 	 0.853
+T-test (difference and p-value): -3.99666, 0.00008
+=====
+sum_deltas_jaccard
+Averages: 0.076 	 0.086
+T-test (difference and p-value): -0.80441, 0.42157
+=====
+mean_dist_globalanchors
+Averages: 0.301 	 0.320
+T-test (difference and p-value): -4.40432, 0.00001
+=====
+sum_deltas_globalanchors
+Averages: 0.287 	 0.207
+T-test (difference and p-value): 3.23996, 0.00128
+=====
+mean_dist_procrustes
+Averages: 0.385 	 0.411
+T-test (difference and p-value): -5.03511, 0.00000
+=====
+sum_deltas_procrustes
+Averages: 0.330 	 0.294
+T-test (difference and p-value): 1.40918, 0.15946
