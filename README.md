@@ -86,6 +86,3 @@ Also, you can check correlation between distances and frequency for all adjectiv
 python3 correlation.py evaluative.csv regular.csv
 ```
 
-
-# Data
-The diachronic word embedding models we used in the paper are available for downloading at https://rusvectores.org/news_history/RNC_decades/ (with corpora) for Russian and https://rusvectores.org/news_history/COHA_decades/ for English.
