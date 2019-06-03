@@ -1,0 +1,13 @@
+Method,English,,Norwegian,,Russian,
+# fillers,8994,,3989,,7535,
+Freq diff,0.00001,,0.00003,,0.00001,
+,Mean distances,,,,,
+,correlation,P-value,correlation,P-value,correlation,P-value
+Jaccard,-11.08417,0.00000,-3.99666,0.00008,-15.05004,0.00000
+Procrustes,-15.52448,0.00000,-5.03511,0.00000,-12.01264,0.00000
+GlobalAnchors,11.90964,0.00000,-4.40432,0.00001,12.62373,0.00000
+,Mean deltas from 1960s,,,,,
+,correlation,P-value,correlation,P-value,correlation,P-value
+Jaccard,3.27809,0.00106,-0.80441,0.42157,1.44064,0.14981
+Procrustes,2.98073,0.00291,1.40918,0.15946,3.92442,0.00009
+GlobalAnchors,3.57012,0.00036,3.23996,0.00128,3.11241,0.00188
