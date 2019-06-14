@@ -2,8 +2,10 @@
 
 This repository accompanies the paper 'Measuring diachronic evolution of evaluative adjectives with distributional models: the case for English, Norwegian, and Russian'
 
-It contains the lists of evaluative adjectives for English, Norwegian and Russian, and the code to measure the speed of semantic change using word embeddings. Diachronic word embedding models for these languages can be downloaded at the [NLPL Vectors repository](http://vectors.nlpl.eu/repository/).
-
+It contains the lists of evaluative adjectives for English, Norwegian and Russian, and the code to measure the speed of semantic change using word embeddings. Diachronic word embedding models for these languages can be downloaded at the [NLPL Vectors repository](http://vectors.nlpl.eu/repository/):
+- [English](http://vectors.nlpl.eu/repository/11/188.zip)
+- [Norwegian](http://vectors.nlpl.eu/repository/11/189.zip)
+- [Russian](http://vectors.nlpl.eu/repository/11/190.zip)
 
 
 # Paper abstract
