@@ -1,6 +1,6 @@
 # Diachronic semantic shifts in adjectives
 
-This repository accompanies the paper 'Measuring diachronic evolution of evaluative adjectives with distributional models: the case for English, Norwegian, and Russian'
+This repository accompanies the paper '[Measuring diachronic evolution of evaluative adjectives with distributional models: the case for English, Norwegian, and Russian](https://aclweb.org/anthology/papers/W/W19/W19-4725/)' (in Proceedings of the 1st International Workshop on Computational Approaches to Historical Language Change, 2019) by Julia Rodina, Daria Bakshandaeva, Vadim Fomin, Andrey Kutuzov, Samia Touileb, Erik Velldal.
 
 It contains the lists of evaluative adjectives for English, Norwegian and Russian, and the code to measure the speed of semantic change using word embeddings. Diachronic word embedding models for these languages can be downloaded at the [NLPL Vectors repository](http://vectors.nlpl.eu/repository/):
 - [English](http://vectors.nlpl.eu/repository/11/188.zip)
