@@ -45,7 +45,8 @@ You should run `get_adjectives.py` as follows, specifying language (rus, eng or 
 python3 get_adjectives.py rus 500 (with_distribution | simple) corpus_lengths.json
 ```
 
-Also, you should have folder distibutive _models/_ where embedding models for each time period are kept and a .json with corpus lengths in the following format:  
+Also, you should have the _models/_ folder, where embedding models for each time period are kept 
+and a .json with corpus lengths in the following format:  
 
 ```
 {
@@ -60,10 +61,11 @@ Also, you should have folder distibutive _models/_ where embedding models for ea
   "eng": { <...>
 ```
 
-This will result in folder _adjectives/_ with output files in the following format: **{lang}\_{regular/incremental}\_filtered\_{treshold}.csv**
+This will result in the _adjectives/_ folder with output files named following the format: 
+**{lang}\_{regular/incremental}\_filtered\_{treshold}.csv**
 
 **To evaluate adjectives:**  
-You should run `get_adjectives.py` as follows, specifying language (rus, eng or nor), kind of model, frequency treshold and top n neighbours for Jaccard distance:  
+You should run `comparing_adjectives.py` as follows, specifying language (rus, eng or nor), kind of model, frequency treshold and top n neighbours for Jaccard distance:  
 
 ```
 python3 comparing_adjectives.py -l rus -k regular -mf 500 -n 50

@@ -3,14 +3,13 @@
 
 import argparse
 import sys
+import os
 import numpy as np
 import pandas as pd
 from get_adjectives import get_models_by_decade, get_len, get_freqdict
 from algos import GlobalAnchors, smart_procrustes_align_gensim, Jaccard
 from utils import intersection_align_gensim
 import percache
-
-
 
 
 def intersec_models(modellist, intersec_vocab):
@@ -25,8 +24,6 @@ def align_models(modellist):
         _ = smart_procrustes_align_gensim(modellist[0], model)
 
     return modellist
-
-
 
 
 def get_mean_dist_procrustes(wordlist, modellist):
@@ -124,6 +121,7 @@ def get_move_from_initial_jaccard(wordlist, modellist, top_n_neighbors):
 
     return move_from_init
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--lang', '-l', dest='lexicon', choices=['rus', 'eng', 'nor'])
@@ -141,6 +139,10 @@ if __name__ == "__main__":
     root = args.root
     output_root = args.out_root
 
+    os.makedirs(output_root+args.lexicon, exist_ok=True)
+
+    START_DECADE = 1910
+
     evaluative_adj_path = "{}{}_{}_filtered_{}.csv".format(
         root, args.lexicon, args.kind, args.min_freq)
 
@@ -153,19 +155,23 @@ if __name__ == "__main__":
 
     cache = percache.Cache(rest_adj_path.replace('.csv', '') + '_tmp_cache')
 
+
     @cache
     def get_anchor(word, model):
-        model_anchor = GlobalAnchors(w2v1=model, w2v2=model, assume_vocabs_are_identical=True).get_global_anchors(word, w2v=model)
+        model_anchor = GlobalAnchors(w2v1=model, w2v2=model,
+                                     assume_vocabs_are_identical=True).get_global_anchors(word,
+                                                                                          w2v=model)
         return model_anchor
+
 
     models = []
     corpus_lens = []
-    for decade in range(1960, 2010, 10):
-        model = get_models_by_decade(decade, args.kind, lang=args.lexicon)
+    for decade in range(START_DECADE, 2010, 10):
+        cur_model = get_models_by_decade(decade, args.kind, lang=args.lexicon)
         corpus_len = get_len(str(decade), args.lengths, lang=args.lexicon)
 
         corpus_lens.append(corpus_len)
-        models.append(model)
+        models.append(cur_model)
 
     vocabs = [model.vocab for model in models]
 
@@ -175,9 +181,9 @@ if __name__ == "__main__":
 
     words = set()
     eval_adjs = pd.read_csv(evaluative_adj_path)
-    for word in eval_adjs['WORD']:
-        if word in intersec:
-            words.add(word)
+    for cur_word in eval_adjs['WORD']:
+        if cur_word in intersec:
+            words.add(cur_word)
 
     results_eval = pd.DataFrame()
     results_eval['WORD'] = list(words)
@@ -185,9 +191,9 @@ if __name__ == "__main__":
     rest_adjs = pd.read_csv(rest_adj_path)
 
     rest = set()
-    for word in rest_adjs['WORD']:
-        if word in intersec:
-            rest.add(word)
+    for cur_word in rest_adjs['WORD']:
+        if cur_word in intersec:
+            rest.add(cur_word)
 
     results_rest = pd.DataFrame()
     results_rest['WORD'] = list(rest)
@@ -262,4 +268,3 @@ if __name__ == "__main__":
     else:
         results_rest.to_csv("{}{}/rest_{}_{}.csv".format(
             output_root, args.lexicon, args.kind, args.min_freq))
-

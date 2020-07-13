@@ -104,9 +104,9 @@ def output_results(evaluative_dict, rest_dict):
         except (ValueError, KeyError):
             missing_perc.append(evaluative_dict[i])
             continue
-        for l in sl:
-            finallist.add(l)
-            rest_dict_inv[perc].remove(l)
+        for el in sl:
+            finallist.add(el)
+            rest_dict_inv[perc].remove(el)
 
     df['WORD'] = list(finallist)
 
@@ -128,34 +128,44 @@ def get_len(current_corpus, lens_file, lang='rus'):
 if __name__ == '__main__':
     root = 'adjectives/'
 
+    INCREMENTAL = False
+    START_DECADE = 1910
+
     models_regular = []
-    models_incremental = []
+    if INCREMENTAL:
+        models_incremental = []
     corpus_lens = []
 
     language = sys.argv[1]  # one of ['eng', 'rus', 'nor']
 
+    os.makedirs(root + 'rest/' + language, exist_ok=True)
+
     corpora_sizes_file = sys.argv[4]
 
-    for decade in range(1960, 2010, 10):
-        model_regular = get_models_by_decade(decade, 'regular', lang=language)
-        model_incremental = get_models_by_decade(decade, 'incremental', lang=language)
-        corpus_len = get_len(str(decade), corpora_sizes_file)
-
+    for decade in range(START_DECADE, 2010, 10):
+        corpus_len = get_len(str(decade), corpora_sizes_file, lang=language)
         corpus_lens.append(corpus_len)
+
+        model_regular = get_models_by_decade(decade, 'regular', lang=language)
         models_regular.append(model_regular)
-        models_incremental.append(model_incremental)
+        if INCREMENTAL:
+            model_incremental = get_models_by_decade(decade, 'incremental', lang=language)
+            models_incremental.append(model_incremental)
 
     vocabs_regular = [model.vocab for model in models_regular]
-    vocabs_incremental = [model.vocab for model in models_incremental]
+    if INCREMENTAL:
+        vocabs_incremental = [model.vocab for model in models_incremental]
 
     intersec_regular = set.intersection(*map(set, vocabs_regular))
     print('Size of shared vocabulary, regular:', len(intersec_regular), file=sys.stderr)
-    intersec_incremental = set.intersection(*map(set, vocabs_incremental))
-    print('Size of shared vocabulary, incremental:', len(intersec_incremental), file=sys.stderr)
+    if INCREMENTAL:
+        intersec_incremental = set.intersection(*map(set, vocabs_incremental))
+        print('Size of shared vocabulary, incremental:', len(intersec_incremental), file=sys.stderr)
 
     print('Loading evaluative vocabulary...', file=sys.stderr)
     words_regular = []
-    words_incremental = []
+    if INCREMENTAL:
+        words_incremental = []
     eval_adj = pd.read_csv('datasets/{}/{}_sentiment.csv'.format(
         language, language))
 
@@ -168,94 +178,87 @@ if __name__ == '__main__':
         all_eval_adj.add(voc_word)
         if voc_word in intersec_regular:
             words_regular.append(voc_word)
-        if voc_word in intersec_incremental:
-            words_incremental.append(voc_word)
-
-    # print(len(words_regular), len(words_incremental))
-    # print(words_regular[:10], words_intersec[:10])
+        if INCREMENTAL:
+            if voc_word in intersec_incremental:
+                words_incremental.append(voc_word)
 
     print('Filtering by frequency...', file=sys.stderr)
     words_regular_filtered = delete_lowfrequent(words_regular, int(sys.argv[2]), vocabs_regular)
-    words_incremental_filtered = delete_lowfrequent(words_incremental, int(sys.argv[2]),
-                                                    vocabs_incremental)
+    if INCREMENTAL:
+        words_incremental_filtered = delete_lowfrequent(words_incremental, int(sys.argv[2]),
+                                                        vocabs_incremental)
 
     # print(len(words_regular_filtered), len(words_incremental_filtered))
     # print(words_regular_filtered[:10], words_incremental_filtered[:10])
 
     wordfreq_regular = get_freqdict(words_regular, vocabs_regular, corpus_lens)
-    wordfreq_incremental = get_freqdict(words_incremental, vocabs_incremental, corpus_lens)
     wordfreq_regular_filtered = get_freqdict(words_regular_filtered, vocabs_regular, corpus_lens)
-    wordfreq_incremental_filtered = \
-        get_freqdict(words_incremental_filtered, vocabs_incremental, corpus_lens)
-
-    '''
-    for x in list(wordfreq_regular)[0:5]:
-        print("key {}, value {} ".format(x, wordfreq_regular[x]))
-
-    for x in list(wordfreq_incremental_filtered)[0:5]:
-        print("key {}, value {} ".format(x, wordfreq_incremental_filtered[x]))
-    '''
+    if INCREMENTAL:
+        wordfreq_incremental = get_freqdict(words_incremental, vocabs_incremental, corpus_lens)
+        wordfreq_incremental_filtered = get_freqdict(words_incremental_filtered,
+                                                     vocabs_incremental, corpus_lens)
 
     print('Generating fillers...', file=sys.stderr)
     rest_regular = set()
-    rest_incremental = set()
+
     for voc_word in intersec_regular:
         if voc_word.endswith(tag) and voc_word not in all_eval_adj:
             rest_regular.add(voc_word)
-    for voc_word in intersec_incremental:
-        if voc_word.endswith(tag) and voc_word not in all_eval_adj:
-            rest_incremental.add(voc_word)
+    if INCREMENTAL:
+        rest_incremental = set()
+        for voc_word in intersec_incremental:
+            if voc_word.endswith(tag) and voc_word not in all_eval_adj:
+                rest_incremental.add(voc_word)
 
     rest_regular_filtered = delete_lowfrequent(rest_regular, int(sys.argv[2]), vocabs_regular)
-    rest_incremental_filtered = delete_lowfrequent(rest_incremental, int(sys.argv[2]),
-                                                   vocabs_incremental)
+
+    if INCREMENTAL:
+        rest_incremental_filtered = delete_lowfrequent(rest_incremental, int(sys.argv[2]),
+                                                       vocabs_incremental)
 
     restfreq_regular = get_freqdict(rest_regular, vocabs_regular, corpus_lens)
-    restfreq_incremental = get_freqdict(rest_incremental, vocabs_incremental, corpus_lens)
     restfreq_regular_filtered = get_freqdict(rest_regular_filtered, vocabs_regular, corpus_lens)
-    restfreq_incremental_filtered = get_freqdict(rest_incremental_filtered, vocabs_incremental,
-                                                 corpus_lens)
 
-    '''
-    for x in list(restfreq_regular)[0:5]:
-        print("key {}, value {} ".format(x, restfreq_regular[x]))
+    if INCREMENTAL:
+        restfreq_incremental = get_freqdict(rest_incremental, vocabs_incremental, corpus_lens)
+        restfreq_incremental_filtered = get_freqdict(rest_incremental_filtered, vocabs_incremental,
+                                                     corpus_lens)
 
-    for x in list(restfreq_incremental_filtered)[0:5]:
-        print("key {}, value {} ".format(x, restfreq_incremental_filtered[x]))
-    '''
     if sys.argv[3] == 'with_distribution':
         print('Sampling proper distribution...', file=sys.stderr)
         output_results(wordfreq_regular, restfreq_regular).to_csv(root + 'rest/' + language + '/'
                                                                   + sys.argv[3] + '/regular.csv')
-        output_results(wordfreq_incremental, restfreq_incremental).to_csv(
-            root + 'rest/' + language + '/' + sys.argv[3] + '/incremental.csv')
         output_results(wordfreq_regular_filtered, restfreq_regular_filtered).to_csv(
             root + 'rest/' + language + '/' + sys.argv[3] + '/regular_filtered_' + sys.argv[
                 2] + '.csv')
-        output_results(wordfreq_incremental_filtered, restfreq_incremental_filtered).to_csv(
-            root + 'rest/' + language + '/' + sys.argv[3] + '/incremental_filtered_' + sys.argv[
-                2] + '.csv')
+        if INCREMENTAL:
+            output_results(wordfreq_incremental, restfreq_incremental).to_csv(
+                root + 'rest/' + language + '/' + sys.argv[3] + '/incremental.csv')
+            output_results(wordfreq_incremental_filtered, restfreq_incremental_filtered).to_csv(
+                root + 'rest/' + language + '/' + sys.argv[3] + '/incremental_filtered_' + sys.argv[
+                    2] + '.csv')
     else:
         rest_reg_df = pd.DataFrame()
         rest_reg_df['WORD'] = sorted(list(rest_regular))
         rest_reg_df.to_csv(root + 'rest/' + language + '/regular.csv')
-        rest_incr_df = pd.DataFrame()
-        rest_incr_df['WORD'] = sorted(list(rest_incremental))
-        rest_incr_df.to_csv(root + 'rest/' + language + '/incremental.csv')
         rest_reg_fil_df = pd.DataFrame()
         rest_reg_fil_df['WORD'] = sorted(list(rest_regular_filtered))
         rest_reg_fil_df.to_csv(
             root + 'rest/' + language + '/regular_filtered_' + sys.argv[2] + '.csv')
-        rest_incr_fil_df = pd.DataFrame()
-        rest_incr_fil_df['WORD'] = sorted(list(rest_incremental_filtered))
-        rest_incr_fil_df.to_csv(
-            root + 'rest/' + language + '/incremental_filtered_' + sys.argv[2] + '.csv')
+        if INCREMENTAL:
+            rest_incr_df = pd.DataFrame()
+            rest_incr_df['WORD'] = sorted(list(rest_incremental))
+            rest_incr_df.to_csv(root + 'rest/' + language + '/incremental.csv')
+            rest_incr_fil_df = pd.DataFrame()
+            rest_incr_fil_df['WORD'] = sorted(list(rest_incremental_filtered))
+            rest_incr_fil_df.to_csv(
+                root + 'rest/' + language + '/incremental_filtered_' + sys.argv[2] + '.csv')
 
     eval_filtered_regular = pd.DataFrame()
-    eval_filtered_incremental = pd.DataFrame()
     eval_filtered_regular['WORD'] = sorted(list(words_regular_filtered))
     eval_filtered_regular.to_csv('{}{}_regular_filtered_{}.csv'.format(root, language, sys.argv[2]))
-
-    eval_filtered_incremental['WORD'] = sorted(list(words_incremental_filtered))
-    eval_filtered_incremental.to_csv('{}{}_incremental_filtered_{}.csv'.format(
-        root, language, sys.argv[2]))
+    if INCREMENTAL:
+        eval_filtered_incremental = pd.DataFrame()
+        eval_filtered_incremental['WORD'] = sorted(list(words_incremental_filtered))
+        eval_filtered_incremental.to_csv('{}{}_incremental_filtered_{}.csv'.format(
+            root, language, sys.argv[2]))

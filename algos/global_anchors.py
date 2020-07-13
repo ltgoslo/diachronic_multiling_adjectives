@@ -15,7 +15,8 @@ class GlobalAnchors(object):
     def __repr__(self):
         return "GlobalAnchors"
 
-    def get_global_anchors(self, word: str, w2v: gensim.models.KeyedVectors):
+    @staticmethod
+    def get_global_anchors(word: str, w2v: gensim.models.KeyedVectors):
         """
         This takes in a word and a KeyedVectors model and returns a vector of cosine distances
         between this word and each word in the vocab.
@@ -30,9 +31,6 @@ class GlobalAnchors(object):
     def get_score(self, word: str):
         w2v1_anchors = self.get_global_anchors(word, self.w2v1)
         w2v2_anchors = self.get_global_anchors(word, self.w2v2)
-
-        # score = gensim.models.KeyedVectors.cosine_similarities(
-        # w2v1_anchors, w2v2_anchors.reshape(1, -1))[0]
         score = np.dot(w2v1_anchors, w2v2_anchors)
         return score
 
