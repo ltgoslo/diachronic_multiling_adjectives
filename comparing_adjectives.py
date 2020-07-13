@@ -141,7 +141,7 @@ if __name__ == "__main__":
 
     os.makedirs(output_root+args.lexicon, exist_ok=True)
 
-    START_DECADE = 1910
+    START_DECADE = 1960
 
     evaluative_adj_path = "{}{}_{}_filtered_{}.csv".format(
         root, args.lexicon, args.kind, args.min_freq)

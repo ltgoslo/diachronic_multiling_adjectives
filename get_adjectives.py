@@ -129,7 +129,7 @@ if __name__ == '__main__':
     root = 'adjectives/'
 
     INCREMENTAL = False
-    START_DECADE = 1910
+    START_DECADE = 1960
 
     models_regular = []
     if INCREMENTAL:
