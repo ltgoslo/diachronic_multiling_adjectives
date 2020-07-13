@@ -11,13 +11,13 @@ df = pd.concat([df1, df2])
 
 print(f"Correlation frequency-mean_dist_jaccard: "
       f"{pearsonr(df['frequency'], df['mean_dist_jaccard'])}")
-print(f"Correlation frequency-sum_deltas_jaccard: "
+print(f"Correlation frequency-mean_deltas_jaccard: "
       f"{pearsonr(df['frequency'], df['sum_deltas_jaccard'])}")
 print(f"Correlation frequency-mean_dist_globalanchors: "
       f"{pearsonr(df['frequency'], df['mean_dist_globalanchors'])}")
-print(f"Correlation frequency-sum_deltas_globalanchors: "
+print(f"Correlation frequency-mean_deltas_globalanchors: "
       f"{pearsonr(df['frequency'], df['sum_deltas_globalanchors'])}")
 print(f"Correlation frequency-mean_dist_procrustes: "
       f"{pearsonr(df['frequency'], df['mean_dist_procrustes'])}")
-print(f"Correlation frequency-sum_deltas_procrustes: "
+print(f"Correlation frequency-mean_deltas_procrustes: "
       f"{pearsonr(df['frequency'], df['sum_deltas_procrustes'])}")
